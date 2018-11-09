@@ -7,7 +7,7 @@ import LoadMoreBtn from '../elements/LoadMoreBtn/LoadMoreBtn';
 import Spinner from '../elements/Spinner/Spinner';
 import '../../config';
 import './Home.css';
-import { API_URL, API_KEY } from '../../config';
+import { API_URL, API_KEY, IMAGE_BASE_URL, BACKDROP_SIZE } from '../../config';
 
 class Home extends Component {
     state = {
@@ -16,13 +16,13 @@ class Home extends Component {
         loading: false,
         currentPage: 0,
         totalPages: 0,
-        searchTerm: '',
+        searchTerm: ''
     }   
 
     componentDidMount() {
         this.setState({ loading: true })
-        const endpoint = `${API_URL}movie/popular?api_key${API_KEY}&language=en-US&page=1`;
-        this.fetchItems(endpoint)
+        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+        this.fetchItems(endpoint);
     }
 
     loadMoreItems = () => {
@@ -54,8 +54,15 @@ class Home extends Component {
     render(){
         return(
             <div className='rmdb-home'>
-                <HeroImage />
-                <SearchBar />
+            {this.state.heroImage ?
+                <div>
+                    <HeroImage
+                        image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${this.state.heroImage.backdrop_path}`}
+                        title={this.state.heroImage.original_title}
+                        text = {this.state.heroImage.overview}
+                    />
+                    <SearchBar />
+                </div> : null }
                 <FourColGrid />
                 <Spinner />
                 <LoadMoreBtn />
